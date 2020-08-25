@@ -21,8 +21,10 @@ The Bela software is distributed under the GNU Lesser General Public License
 #include <Bela.h>
 #include <cmath>
 
-float gFrequency = 440.0;	// Frequency of the sine wave in Hz
-float gAmplitude = 0.6;		// Amplitude of the sine wave (1.0 is maximum)
+float gFrequency = 440.0;			// Frequency of the sine wave in Hz
+float gAmplitude = 0.6;				// Amplitude of the sine wave (1.0 is maximum)
+unsigned int gNumSamples = 0; 		// Track total number of elapsed samples for sin wave
+float gPhase = 0;					// Track phase of sin wave
 
 // setup() runs once at the beginning of your program
 bool setup(BelaContext *context, void *userData)
@@ -35,9 +37,15 @@ void render(BelaContext *context, void *userData)
 {
    	// This for() loop goes through all the samples in the block
 	for (unsigned int n = 0; n < context->audioFrames; n++) {
-	    // TODO: Calculate a sample of the sine wave
-	    //       Start by copying the calculation from the 'sine-generator' project
-		float out = ;
+		
+		// Increment phase by one sample at frequency
+		gPhase += 2.0 * M_PI * gFrequency / context->audioSampleRate);
+		if (gPhase >= 2.0 * M_PI) {
+			gphase -= 2.0 * M_PI;
+		}
+		
+		// Calculate sin wave sample
+		float out = gAmplitude * sin(gPhase);
 		
 		// This part is done for you: store the sample in the
 		// audio output buffer
